@@ -1,0 +1,138 @@
+[
+    {
+        "id": "17245a72d28839e9",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "b7e3c011d50f2866",
+        "type": "inject",
+        "z": "17245a72d28839e9",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 100,
+        "y": 60,
+        "wires": [
+            [
+                "14b2de53db66008f"
+            ]
+        ]
+    },
+    {
+        "id": "03456e3af3bf9165",
+        "type": "function",
+        "z": "17245a72d28839e9",
+        "name": "function 1",
+        "func": "// Get the buffer containing the image (assuming it's stored in msg.payload)\nvar imageBuffer = msg.payload;\n\n// Convert the buffer to a Base64 encoded string\nvar base64Image = imageBuffer.toString('base64');\n\n// Create a new message with the Base64 encoded image\nmsg.payload = base64Image;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 160,
+        "wires": [
+            [
+                "4797e3baf0c0d4da"
+            ]
+        ]
+    },
+    {
+        "id": "4797e3baf0c0d4da",
+        "type": "template",
+        "z": "17245a72d28839e9",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{\n    \"id\": \"1234\",\n    \"detector_name\": \"default\",\n    \"image\": \"png\",\n    \"detect\": {\n        \"*\": 50\n    },\n    \"data\": \"{{{payload}}}\"\n}",
+        "output": "str",
+        "x": 620,
+        "y": 200,
+        "wires": [
+            [
+                "ea514e50a4239162"
+            ]
+        ]
+    },
+    {
+        "id": "88b9b42aab4effb9",
+        "type": "debug",
+        "z": "17245a72d28839e9",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "ea514e50a4239162",
+        "type": "http request",
+        "z": "17245a72d28839e9",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://localhost:8080/detect",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 790,
+        "y": 120,
+        "wires": [
+            [
+                "88b9b42aab4effb9"
+            ]
+        ]
+    },
+    {
+        "id": "14b2de53db66008f",
+        "type": "usbcamera",
+        "z": "17245a72d28839e9",
+        "filemode": "1",
+        "filename": "image01.jpg",
+        "filedefpath": "1",
+        "filepath": "",
+        "fileformat": "jpeg",
+        "resolution": "1",
+        "name": "",
+        "x": 250,
+        "y": 160,
+        "wires": [
+            [
+                "03456e3af3bf9165"
+            ]
+        ]
+    }
+]

@@ -1,0 +1,48 @@
+version: "3.9"
+services:
+   
+  go2rtc:
+    container_name: go2rtc
+    restart: unless-stopped
+    image: alexxit/go2rtc:latest
+    privileged: true
+    volumes:
+      - ./go2rtc/go2rtc.yaml:/config/go2rtc.yaml
+      - /dev/video0:/dev/video0
+    ports:
+      - 1983:1984
+      - 1337:8554
+  # frigate:
+  #   restart: unless-stopped
+  #   container_name: frigate
+  #   image: ghcr.io/blakeblackshear/frigate:stable
+  #   privileged: true
+  #   shm_size: "64mb"
+  #   volumes:
+  #     - ./frigate/config:/config
+  #     - ./frigate/media:/media/frigate
+  #     - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear
+  #       target: /tmp/cache
+  #       tmpfs:
+  #         size: 1000000000
+  #   network_mode: host
+  #   environment:
+  #     FRIGATE_RTSP_PASSWORD: "password"
+
+  doods2:
+     container_name: doods2
+     ports:
+       - 8080:8080
+     image: snowzach/doods2:latest
+  # mediamtx:
+  #   container_name: mediamtx
+  #   image: bluenviron/mediamtx:latest
+  #   network_mode: host
+  #   privileged: true
+  #   tmpfs:
+  #     - /dev/shm:exec
+  #   volumes:
+  #     - /dev/video0:/dev/video0
+  #     - ./mediamtx/mediamtx.yml:/mediamtx.yml
+  #   environment:
+  #     - MTX_PATHS_CAM_SOURCE=rpiCamera
